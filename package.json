@@ -1,0 +1,25 @@
+{
+  "name": "ShirvelBot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/index.js",
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/index.js",
+    "build": "babel src --out-dir build",
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9",
+    "@babel/node": "^7.12.6",
+    "@babel/preset-env": "^7.12.7",
+    "mongoose": "^5.11.4",
+    "node-cron": "^2.0.3",
+    "nodemon": "^2.0.6",
+    "telegraf": "^3.38.0"
+  },
+  "type": "module"
+}
