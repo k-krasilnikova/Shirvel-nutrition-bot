@@ -6,10 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec babel-node src/index.js",
     "build": "babel src --out-dir build",
-    "start": "micro-bot"
-  },
-  "engines": {
-    "node": "14.x"
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -19,11 +16,12 @@
     "@babel/core": "^7.12.9",
     "@babel/node": "^7.12.6",
     "@babel/preset-env": "^7.12.7",
-    "micro-bot": "^2.5.3",
     "moment": "^2.29.1",
     "mongoose": "^5.11.4",
     "node-cron": "^2.0.3",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    // "micro-bot": "^2.5.3",
+    "telegraf": "^3.38.0"
   },
   "type": "module"
 }

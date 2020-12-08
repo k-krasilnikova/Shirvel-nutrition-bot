@@ -1,4 +1,4 @@
-import { Composer } from "micro-bot";
+import { Telegraf } from "telegraf";
 import Stage from "telegraf/stage";
 import session from "telegraf/session";
 
@@ -11,14 +11,14 @@ import { CONFIG } from "../env";
 const { enter, leave } = Stage;
 const stage = new Stage();
 
-const bot = new Composer();
+const bot = new Telegraf(CONFIG.TOKEN);
 bot.use(session());
 bot.use(stage.middleware());
 
 registrationHandler(bot, stage);
 dailyReportHandler(bot, stage);
 
-export default bot;
+bot.launch();
 
 mongoose.connect(
   CONFIG.DB,
