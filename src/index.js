@@ -1,6 +1,6 @@
 import { Telegraf } from "telegraf";
-import Stage from "telegraf/stage";
-import session from "telegraf/session";
+import Stage from "telegraf/stage.js";
+import session from "telegraf/session.js";
 
 import mongoose from "mongoose";
 
