@@ -1,4 +1,4 @@
-import { Telegraf } from "telegraf";
+import telegraf from "telegraf";
 import Stage from "telegraf/stage.js";
 import session from "telegraf/session.js";
 
@@ -8,6 +8,7 @@ import { registrationHandler, dailyReportHandler } from "./handlers/index.js";
 import { restartApplication } from "./utils.js";
 import { CONFIG } from "../env.js";
 
+const { Telegraf } = telegraf;
 const { enter, leave } = Stage;
 const stage = new Stage();
 
