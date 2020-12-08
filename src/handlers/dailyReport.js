@@ -1,4 +1,5 @@
 import Scene from "telegraf/scenes/base";
+import moment from "moment";
 
 import { REPLIES, DAILY_MARKUP } from "../constants";
 import { sendNotificationForReviewer } from "../utils";
@@ -17,11 +18,10 @@ const dailyReportHandler = async (bot, stage) => {
   stage.register(getDateForDaily);
   getDateForDaily.on("text", async (ctx) => {
     ctx.session.date = ctx.message.text;
-    let date = new Date(ctx.message.text);
-    date = new Date(date.setHours(date.getHours() + 3)); //Add three hours
-    ctx.session.date = date;
-    const isDateInPast =
-      date.setHours(0, 0, 0, 0) <= new Date().setHours(0, 0, 0, 0);
+    const date = moment(ctx.message.text, "DD/MM/YYYY");
+    ctx.session.date = date.format("DD/MM/YYYY");
+    const isDateInPast = date.isBefore();
+
     if (date && isDateInPast) {
       ctx.reply(DAILY_MARKUP.SD.reply);
       await ctx.scene.leave("getDateForDaily");
@@ -71,7 +71,7 @@ const dailyReportHandler = async (bot, stage) => {
     ctx.session.snacks = ctx.message.text;
     ctx.reply(REPLIES.DailyReport.end);
     const user = await getUserByChatId(ctx.chat.id);
-    const today = new Date();
+    const today = moment().format("DD/MM/YYYY");
 
     const props = {
       chatId: ctx.chat.id,
@@ -79,9 +79,7 @@ const dailyReportHandler = async (bot, stage) => {
       lunch: ctx.session.lunch,
       dinner: ctx.session.dinner,
       snacks: ctx.session.snacks,
-      date:
-        ctx.session.date?.toLocaleDateString("en-GB") ||
-        today.toLocaleDateString("en-GB"),
+      date: ctx.session.date || today,
     };
 
     const message = `🥑 ${user.fullName} заполнил(а) ежедневный отчёт за ${props.date}.\nЗавтрак: ${props.breakfest}.\nОбед:  ${props.lunch}.\nУжин:  ${props.dinner}.\nПерекусы: ${props.snacks}.`;

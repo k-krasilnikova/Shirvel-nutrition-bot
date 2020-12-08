@@ -14,13 +14,13 @@ var UserSchema = new Schema(
       type: String,
     },
     weight: {
-      type: Number,
+      type: String,
     },
     height: {
-      type: Number,
+      type: String,
     },
     age: {
-      type: Number,
+      type: String,
     },
     isActive: {
       type: Boolean,
