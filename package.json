@@ -2,9 +2,9 @@
   "name": "ShirvelBot",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/index.js",
+  "main": "./src/index.cjs",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/index.js",
+    "dev": "nodemon --exec babel-node src/index.cjs",
     "build": "babel src --out-dir build",
     "start": "micro-bot"
   },
