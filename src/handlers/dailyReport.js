@@ -83,6 +83,7 @@ const dailyReportHandler = async (bot, stage) => {
     };
 
     const message = `🥑 ${user.fullName} заполнил(а) ежедневный отчёт за ${props.date}.\nЗавтрак: ${props.breakfest}.\nОбед:  ${props.lunch}.\nУжин:  ${props.dinner}.\nПерекусы: ${props.snacks}.`;
+    console.log(message);
     sendNotificationForReviewer({ message, ctx });
     await createReport(props);
     await ctx.scene.leave("getShacks");
