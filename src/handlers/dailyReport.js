@@ -1,10 +1,10 @@
 import Scene from "telegraf/scenes/base";
 import moment from "moment";
 
-import { REPLIES, DAILY_MARKUP } from "../constants";
-import { sendNotificationForReviewer } from "../utils";
-import { createReport } from "../middlewares/reports";
-import { getUserByChatId } from "../middlewares/users";
+import { REPLIES, DAILY_MARKUP } from "../constants.js";
+import { sendNotificationForReviewer } from "../utils.js";
+import { createReport } from "../middlewares/reports.js";
+import { getUserByChatId } from "../middlewares/users.js";
 
 const dailyReportHandler = async (bot, stage) => {
   bot.command("/daily", async (ctx) => {

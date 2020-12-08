@@ -1,4 +1,4 @@
-import dailyReportHandler from "./dailyReport";
-import registrationHandler from "./registration";
+import dailyReportHandler from "./dailyReport.js";
+import registrationHandler from "./registration.js";
 
 export { dailyReportHandler, registrationHandler };

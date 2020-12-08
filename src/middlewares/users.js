@@ -1,4 +1,4 @@
-import User from "../models/user";
+import User from "../models/user.js";
 
 export const createUser = async (props) => {
   let user = await getUserByChatId(props.chatId);

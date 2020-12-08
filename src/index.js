@@ -4,9 +4,9 @@ import session from "telegraf/session.js";
 
 import mongoose from "mongoose";
 
-import { registrationHandler, dailyReportHandler } from "./handlers";
-import { restartApplication } from "./utils";
-import { CONFIG } from "../env";
+import { registrationHandler, dailyReportHandler } from "./handlers.js";
+import { restartApplication } from "./utils.js";
+import { CONFIG } from "../env.js";
 
 const { enter, leave } = Stage;
 const stage = new Stage();

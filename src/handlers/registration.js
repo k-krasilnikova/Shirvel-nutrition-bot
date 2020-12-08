@@ -1,9 +1,9 @@
 import Scene from "telegraf/scenes/base";
 
-import { REPLIES } from "../constants";
-import { sendNotificationForReviewer } from "../utils";
-import { createUser } from "../middlewares/users";
-import { scheduleDailyReport } from "../scheduler";
+import { REPLIES } from "../constants.js";
+import { sendNotificationForReviewer } from "../utils.js";
+import { createUser } from "../middlewares/users.js";
+import { scheduleDailyReport } from "../scheduler.js";
 
 const registrationHandler = async (bot, stage) => {
   bot.start((ctx) => {

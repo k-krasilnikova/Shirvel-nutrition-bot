@@ -1,7 +1,7 @@
 import cron from "node-cron";
 
-import { CONFIG } from "../env";
-import { REPLIES } from "./constants";
+import { CONFIG } from "../env.js";
+import { REPLIES } from "./constants.js";
 
 export const scheduleDailyReport = (bot, chatId) => {
   // cron.schedule("0 21 * * *", () => {

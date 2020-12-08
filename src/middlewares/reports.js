@@ -1,4 +1,4 @@
-import Report from "../models/report";
+import Report from "../models/report.js";
 
 export const createReport = async (props) => {
   let report = await getReportByDate(props.date);
