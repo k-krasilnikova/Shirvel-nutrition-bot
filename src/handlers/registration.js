@@ -1,4 +1,4 @@
-import Scene from "telegraf/scenes/base";
+import Scene from "telegraf/scenes/base.js";
 
 import { REPLIES } from "../constants.js";
 import { sendNotificationForReviewer } from "../utils.js";

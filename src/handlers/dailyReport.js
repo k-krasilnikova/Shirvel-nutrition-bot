@@ -1,4 +1,4 @@
-import Scene from "telegraf/scenes/base";
+import Scene from "telegraf/scenes/base.js";
 import moment from "moment";
 
 import { REPLIES, DAILY_MARKUP } from "../constants.js";
