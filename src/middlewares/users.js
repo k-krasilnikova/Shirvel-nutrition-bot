@@ -16,8 +16,13 @@ export const createUser = async (props) => {
 };
 
 export const getUserByChatId = async (chatId) => {
-  const user = await User.find({
+  const user = await User.findOne({
     chatId,
   });
   return user;
+};
+
+export const getAllUsers = async () => {
+  const users = await User.find({});
+  return users;
 };

@@ -55,7 +55,7 @@ const registrationHandler = async (bot, stage) => {
 
     const message = `✅ Новый пользователь зарегистрирован в системе.\nПолное имя: ${props.fullName},\nВозраст: ${props.age} (года/лет),\nРост: ${props.height} (см),\nВес: ${props.weight} (кг)`;
     sendNotificationForReviewer({ message, ctx });
-    scheduleDailyReport(bot, ctx);
+    scheduleDailyReport(bot, ctx.chat.id);
     await createUser(props);
     await ctx.scene.leave("getWeight");
   });

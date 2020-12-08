@@ -1,9 +1,21 @@
 import Report from "../models/report";
 
 export const createReport = async (props) => {
-  const report = await Report.create({
-    ...props,
-    reaction: null,
+  let report = await getReportByDate(props.date);
+  if (report) {
+    report = await Report.updateOne({ date: props.date }, { ...props });
+  } else {
+    report = await Report.create({
+      ...props,
+      reaction: null,
+    });
+  }
+  return report;
+};
+
+export const getReportByDate = async (date) => {
+  const report = await Report.findOne({
+    date,
   });
   return report;
 };

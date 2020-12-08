@@ -10,9 +10,9 @@ export const REPLIES = {
   DailyReport: {
     start: "Привет. Готов(а) поделиться со мной своим питанием?",
     startMarkup: [
-      { text: "Да", callback_data: "SD" },
-      { text: "Позже", callback_data: "LD" },
-      { text: "Нет", callback_data: "ND" },
+      [{ text: "Да", callback_data: "SD" }],
+      [{ text: "Позже", callback_data: "LD" }],
+      [{ text: "Нет", callback_data: "ND" }],
     ],
     lunch: "Что ты кушал(а) на обед?",
     dinner: "А на ужин?",
@@ -25,7 +25,7 @@ export const DAILY_MARKUP = {
   SD: {
     value: "SD",
     label: "Start daily",
-    reply: "Расскажи мне про свой завтрак",
+    reply: "Расскажи мне про свой завтрак.",
   },
   LD: {
     value: "LD",

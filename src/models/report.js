@@ -21,7 +21,7 @@ var ReportSchema = new Schema(
       type: String,
     },
     date: {
-      type: Date,
+      type: String,
     },
     reaction: {
       type: String,
