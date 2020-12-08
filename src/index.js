@@ -1,4 +1,4 @@
-const { Composer } = require("micro-bot");
+import { Composer } from "micro-bot";
 import Stage from "telegraf/stage";
 import session from "telegraf/session";
 
@@ -18,7 +18,7 @@ bot.use(stage.middleware());
 registrationHandler(bot, stage);
 dailyReportHandler(bot, stage);
 
-module.exports = bot;
+export default bot;
 
 mongoose.connect(
   CONFIG.DB,
