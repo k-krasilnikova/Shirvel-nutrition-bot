@@ -11,7 +11,7 @@ import { CONFIG } from "../env";
 const { enter, leave } = Stage;
 const stage = new Stage();
 
-const bot = new Composer(CONFIG.TOKEN);
+const bot = new Composer();
 bot.use(session());
 bot.use(stage.middleware());
 
