@@ -1,6 +1,7 @@
 import { CONFIG } from "../env.js";
 import { getAllUsers } from "./middlewares/users.js";
 import { scheduleDailyReport, scheduleAngryMessage } from "./scheduler.js";
+import { getUsersWithoutReport } from "./middlewares/user.js";
 
 export const sendNotificationForReviewer = ({ message, ctx }) => {
   ctx.telegram.sendMessage(CONFIG.REVIEWER, message);
