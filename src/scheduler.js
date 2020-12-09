@@ -8,6 +8,7 @@ export const scheduleDailyReport = (bot, chatId) => {
   // cron.schedule("33 15 * * *", () => {
   console.log(chatId, new Date());
   cron.schedule(CONFIG.SCHEDULE_TIME, () => {
+    console.log(CONFIG.SCHEDULE_TIME);
     bot.telegram.sendMessage(chatId, REPLIES.DailyReport.start, {
       reply_markup: {
         inline_keyboard: REPLIES.DailyReport.startMarkup,
