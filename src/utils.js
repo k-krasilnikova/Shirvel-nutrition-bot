@@ -3,7 +3,6 @@ import difference from "lodash/difference.js";
 import { CONFIG } from "../env.js";
 import { getAllUsers } from "./middlewares/users.js";
 import { scheduleDailyReport, scheduleAngryMessage } from "./scheduler.js";
-import { getAllUsers } from "./middlewares/user.js";
 import { getUsersWithReport } from "./middlewares/report.js";
 
 export const sendNotificationForReviewer = ({ message, ctx }) => {
