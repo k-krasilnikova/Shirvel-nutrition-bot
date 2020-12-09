@@ -26,3 +26,9 @@ export const getAllUsers = async () => {
   const users = await User.find({});
   return users;
 };
+
+export const getAllUsersId = async () => {
+  const usersFullInfo = await User.find({});
+  const usersIds = usersFullInfo.map((user) => user.chatId);
+  return usersIds;
+};

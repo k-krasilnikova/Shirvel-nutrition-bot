@@ -26,7 +26,5 @@ export const getUsersWithReport = async () => {
   const yesterday = moment().subtract(1, "days").format("DD/MM/YYYY");
   const reports = await Report.find({ date: yesterday });
   const users = reports.map((report) => report.chatId);
-  const a = await Report.find({ date: yesterday });
-  console.log(yesterday, a, users);
   return users || [];
 };

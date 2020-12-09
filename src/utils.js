@@ -1,7 +1,7 @@
 import difference from "lodash/difference.js";
 
 import { CONFIG } from "../env.js";
-import { getAllUsers } from "./middlewares/users.js";
+import { getAllUsers, getAllUsersId } from "./middlewares/users.js";
 import { scheduleDailyReport, scheduleAngryMessage } from "./scheduler.js";
 import { getUsersWithReport } from "./middlewares/reports.js";
 
@@ -18,8 +18,9 @@ export const restartApplication = async (bot) => {
 
 export const sendEngryMessages = async (bot) => {
   const usersWithReport = await getUsersWithReport();
-  const allUsers = await getAllUsers();
+  const allUsers = await getAllUsersId();
   const usersWithoutReport = difference(usersWithReport, allUsers);
+  console.log(usersWithReport, allUsers, usersWithoutReport);
   for (const user of usersWithoutReport) {
     scheduleAngryMessage(bot, user);
   }
