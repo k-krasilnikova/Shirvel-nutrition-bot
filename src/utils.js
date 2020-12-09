@@ -8,9 +8,7 @@ export const sendNotificationForReviewer = ({ message, ctx }) => {
 
 export const restartApplication = async (bot) => {
   const users = await getAllUsers();
-  console.log(users);
   for (const user of users) {
-    console.log(user);
     scheduleDailyReport(bot, user.chatId);
   }
 };
