@@ -23,7 +23,7 @@ export const getReportByDate = async (date) => {
 };
 
 export const getUsersWithReport = async () => {
-  const today = moment().format("DD/MM/YYYY");
+  const today = moment().subtract(1, "days").format("DD/MM/YYYY");
   const users = await Report.find({ date: today }).map(
     (report) => report.chatId
   );
