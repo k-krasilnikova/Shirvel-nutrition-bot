@@ -18,8 +18,6 @@ export const scheduleDailyReport = (bot, chatId) => {
 
 export const scheduleAngryMessage = (bot, chatId) => {
   cron.schedule(CONFIG.SCHEDULE_TIME_ANGRY, () => {
-    bot.telegram.sendMessage(chatId, REPLIES.AngryMessage, {
-      parse_mod: "HTML",
-    });
+    bot.telegram.sendMessage(chatId, REPLIES.AngryMessage, Extra.markdown());
   });
 };
