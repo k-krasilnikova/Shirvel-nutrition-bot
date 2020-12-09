@@ -1,4 +1,5 @@
 import cron from "node-cron";
+import Extra from "telegraf/extra.js";
 
 import { CONFIG } from "../env.js";
 import { REPLIES } from "./constants.js";
@@ -17,8 +18,6 @@ export const scheduleDailyReport = (bot, chatId) => {
 
 export const scheduleAngryMessage = (bot, chatId) => {
   cron.schedule(CONFIG.SCHEDULE_TIME_ANGRY, () => {
-    bot.telegram.sendMessage(chatId, REPLIES.AngryMessage, {
-      parse_mode: "Markdown",
-    });
+    bot.telegram.sendMessage(chatId, REPLIES.AngryMessage, Extra.markdown());
   });
 };
