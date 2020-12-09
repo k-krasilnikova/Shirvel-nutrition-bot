@@ -26,20 +26,3 @@ export const getAllUsers = async () => {
   const users = await User.find({});
   return users;
 };
-
-export const getUsersWithoutReport = async () => {
-  const users = await User.aggregate([
-    { $match: query },
-    {
-      $lookup: {
-        from: "users",
-        localField: "chatId",
-        foreignField: "chatId",
-        as: "userId",
-      },
-    },
-    { $unwind: "$userId" },
-  ]);
-  console.log(users);
-  return users;
-};

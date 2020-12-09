@@ -1,7 +1,10 @@
+import difference from "lodash/difference.js";
+
 import { CONFIG } from "../env.js";
 import { getAllUsers } from "./middlewares/users.js";
 import { scheduleDailyReport, scheduleAngryMessage } from "./scheduler.js";
-import { getUsersWithoutReport } from "./middlewares/user.js";
+import { getAllUsers } from "./middlewares/user.js";
+import { getUsersWithReport } from "./middlewares/report.js";
 
 export const sendNotificationForReviewer = ({ message, ctx }) => {
   ctx.telegram.sendMessage(CONFIG.REVIEWER, message);
@@ -15,8 +18,10 @@ export const restartApplication = async (bot) => {
 };
 
 export const sendEgryMessages = async (bot) => {
-  const users = await getUsersWithoutReport();
-  for (const user of users) {
-    scheduleAngryMessage(bot, user.chatId);
+  const usersWithReport = await getUsersWithReport();
+  const allUsers = await getAllUsers();
+  const usersWithoutReport = difference(usersWithReport, allUsers);
+  for (const user of usersWithoutReport) {
+    scheduleAngryMessage(bot, user);
   }
 };

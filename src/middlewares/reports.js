@@ -19,3 +19,12 @@ export const getReportByDate = async (date) => {
   });
   return report;
 };
+
+export const getUsersWithReport = async () => {
+  const today = moment().format("DD/MM/YYYY");
+  const users = await Report.find({ date: today }).map(
+    (report) => report.chatId
+  );
+  console.log(today, users);
+  return users;
+};
