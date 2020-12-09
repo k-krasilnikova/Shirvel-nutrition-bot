@@ -10,5 +10,6 @@ export const restartApplication = async (bot) => {
   const users = await getAllUsers();
   for (const user of users) {
     scheduleDailyReport(bot, user.chatId);
+    scheduleAngryMessage(bot, user.chatId);
   }
 };

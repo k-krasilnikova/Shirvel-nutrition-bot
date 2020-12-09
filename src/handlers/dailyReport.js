@@ -27,7 +27,7 @@ const dailyReportHandler = async (bot, stage) => {
       await ctx.scene.leave("getDateForDaily");
       ctx.scene.enter("getBreakfest");
     } else {
-      ctx.reply(
+      await ctx.reply(
         "Дата введена некорректно. Можно заполнить только данные за прошедший период"
       );
       await ctx.scene.leave("getDateForDaily");
