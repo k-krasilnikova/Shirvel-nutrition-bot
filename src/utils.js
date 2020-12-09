@@ -10,6 +10,12 @@ export const restartApplication = async (bot) => {
   const users = await getAllUsers();
   for (const user of users) {
     scheduleDailyReport(bot, user.chatId);
+  }
+};
+
+export const sendEgryMessages = async (bot) => {
+  const users = await getUsersWithoutReport();
+  for (const user of users) {
     scheduleAngryMessage(bot, user.chatId);
   }
 };

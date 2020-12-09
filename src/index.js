@@ -5,7 +5,7 @@ import session from "telegraf/session.js";
 import mongoose from "mongoose";
 
 import { registrationHandler, dailyReportHandler } from "./handlers/index.js";
-import { restartApplication } from "./utils.js";
+import { restartApplication, sendEgryMessages } from "./utils.js";
 import { CONFIG } from "../env.js";
 
 const { Telegraf } = telegraf;
@@ -18,6 +18,7 @@ bot.use(stage.middleware());
 
 registrationHandler(bot, stage);
 dailyReportHandler(bot, stage);
+sendEgryMessages(bot);
 
 bot.launch();
 
