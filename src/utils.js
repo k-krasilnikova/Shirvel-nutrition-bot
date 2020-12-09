@@ -17,10 +17,9 @@ export const restartApplication = async (bot) => {
 };
 
 export const sendEngryMessages = async (bot) => {
-  const usersWithReport = []; //await getUsersWithReport();
   const allUsers = await getAllUsersId();
-  const usersWithoutReport = difference(usersWithReport, allUsers);
-  console.log(usersWithReport, allUsers, usersWithoutReport);
+  const usersWithReport = []; //await getUsersWithReport();
+  const usersWithoutReport = difference(allUsers, usersWithReport);
   for (const user of usersWithoutReport) {
     scheduleAngryMessage(bot, user);
   }
