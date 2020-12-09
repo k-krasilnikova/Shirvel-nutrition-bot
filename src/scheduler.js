@@ -20,6 +20,7 @@ export const scheduleAngryMessage = (bot, chatId) => {
   cron.schedule(CONFIG.SCHEDULE_TIME_ANGRY, () => {
     bot.telegram.sendMessage(chatId, REPLIES.AngryMessage, {
       parse_mode: "MarkdownV2",
+      disable_notification: true,
     });
   });
 };

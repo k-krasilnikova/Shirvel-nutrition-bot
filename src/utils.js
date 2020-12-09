@@ -17,7 +17,7 @@ export const restartApplication = async (bot) => {
 };
 
 export const sendEngryMessages = async (bot) => {
-  const usersWithReport = await getUsersWithReport();
+  const usersWithReport = []; //await getUsersWithReport();
   const allUsers = await getAllUsersId();
   const usersWithoutReport = difference(usersWithReport, allUsers);
   console.log(usersWithReport, allUsers, usersWithoutReport);
