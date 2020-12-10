@@ -1,5 +1,5 @@
 import { CONFIG } from "../env.js";
-import { REPLIES } from "./constants";
+import { REPLIES } from "./constants.js";
 import { getAllUsers } from "./middlewares/users.js";
 import { scheduleDailyReport } from "./scheduler.js";
 
