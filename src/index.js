@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 
 import { registrationHandler, dailyReportHandler } from "./handlers/index.js";
 import { restartApplication, sendEngryMessages } from "./utils.js";
+import { scheduleCheckingReports } from "./scheduler.js";
 import { CONFIG } from "../env.js";
 
 const { Telegraf } = telegraf;
@@ -17,7 +18,7 @@ bot.use(stage.middleware());
 
 registrationHandler(bot, stage);
 dailyReportHandler(bot, stage);
-sendEngryMessages(bot);
+scheduleCheckingReports(bot);
 
 bot.launch();
 

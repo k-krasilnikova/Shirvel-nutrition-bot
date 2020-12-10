@@ -1,12 +1,13 @@
 import cron from "node-cron";
-import Extra from "telegraf/extra.js";
+import difference from "lodash/difference.js";
 
 import { CONFIG } from "../env.js";
 import { REPLIES } from "./constants.js";
+import { sendEngryMessage } from "./utils.js"
+import { getUsersWithReport } from "./middlewares/reports.js";
+import { getAllUsersId } from "./middlewares/users.js";
 
 export const scheduleDailyReport = (bot, chatId) => {
-  // cron.schedule("0 21 * * *", () => {
-  // cron.schedule("33 15 * * *", () => {
   cron.schedule(CONFIG.SCHEDULE_TIME, () => {
     bot.telegram.sendMessage(chatId, REPLIES.DailyReport.start, {
       reply_markup: {
@@ -16,11 +17,13 @@ export const scheduleDailyReport = (bot, chatId) => {
   });
 };
 
-export const scheduleAngryMessage = (bot, chatId) => {
+export const scheduleCheckingReports = async (bot) => {
   cron.schedule(CONFIG.SCHEDULE_TIME_ANGRY, () => {
-    bot.telegram.sendMessage(chatId, REPLIES.AngryMessage, {
-      parse_mode: "MarkdownV2",
-      disable_notification: true,
-    });
+    const allUsers = await getAllUsersId();
+    const usersWithReport = await getUsersWithReport();
+    const usersWithoutReport = difference(allUsers, usersWithReport);
+    for (const user of usersWithoutReport) {
+      sendEngryMessage(bot, user);
+    }
   });
 };
