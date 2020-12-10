@@ -14,7 +14,7 @@ export const restartApplication = async (bot) => {
   }
 };
 
-export const sendEngryMessages = (bot, user) => {
+export const sendEngryMessage = (bot, user) => {
   bot.telegram.sendMessage(user.chatId, REPLIES.AngryMessage, {
     parse_mode: "MarkdownV2",
     disable_notification: true,
