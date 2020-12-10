@@ -3,7 +3,7 @@ import difference from "lodash/difference.js";
 
 import { CONFIG } from "../env.js";
 import { REPLIES } from "./constants.js";
-import { sendEngryMessage } from "./utils.js"
+import { sendEngryMessage } from "./utils.js";
 import { getUsersWithReport } from "./middlewares/reports.js";
 import { getAllUsersId } from "./middlewares/users.js";
 
@@ -17,8 +17,8 @@ export const scheduleDailyReport = (bot, chatId) => {
   });
 };
 
-export const scheduleCheckingReports = async (bot) => {
-  cron.schedule(CONFIG.SCHEDULE_TIME_ANGRY, () => {
+export const scheduleCheckingReports = (bot) => {
+  cron.schedule(CONFIG.SCHEDULE_TIME_ANGRY, async () => {
     const allUsers = await getAllUsersId();
     const usersWithReport = await getUsersWithReport();
     const usersWithoutReport = difference(allUsers, usersWithReport);
