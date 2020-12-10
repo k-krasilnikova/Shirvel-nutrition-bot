@@ -4,7 +4,7 @@ import session from "telegraf/session.js";
 import mongoose from "mongoose";
 
 import { registrationHandler, dailyReportHandler } from "./handlers/index.js";
-import { restartApplication, sendEngryMessages } from "./utils.js";
+import { restartApplication } from "./utils.js";
 import { scheduleCheckingReports } from "./scheduler.js";
 import { CONFIG } from "../env.js";
 
