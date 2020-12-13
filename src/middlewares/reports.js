@@ -3,9 +3,12 @@ import moment from "moment";
 import Report from "../models/report.js";
 
 export const createReport = async (props) => {
-  let report = await getReportByDate(props.date);
+  let report = await getReportByDate(props.date, props.chatId);
   if (report) {
-    report = await Report.updateOne({ date: props.date }, { ...props });
+    report = await Report.updateOne(
+      { date: props.date, chatId: props.chatId },
+      { ...props }
+    );
   } else {
     report = await Report.create({
       ...props,
@@ -15,9 +18,10 @@ export const createReport = async (props) => {
   return report;
 };
 
-export const getReportByDate = async (date) => {
+export const getReportByDate = async (date, chatId) => {
   const report = await Report.findOne({
     date,
+    chatId,
   });
   return report;
 };

@@ -86,7 +86,6 @@ const dailyReportHandler = async (bot, stage) => {
     console.log(message);
     sendNotificationForReviewer({ message, ctx });
     const report = await createReport(props);
-    console.log(report);
     await ctx.scene.leave("getShacks");
   });
 
