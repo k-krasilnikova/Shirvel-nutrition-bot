@@ -15,8 +15,9 @@ export const restartApplication = async (bot) => {
 };
 
 export const sendEngryMessage = (bot, user) => {
-  bot.telegram.sendMessage(user, REPLIES.AngryMessage, {
-    parse_mode: "MarkdownV2",
-    disable_notification: true,
-  });
+  console.log("Send angry message to:", user);
+  // bot.telegram.sendMessage(user, REPLIES.AngryMessage, {
+  //   parse_mode: "MarkdownV2",
+  //   disable_notification: true,
+  // });
 };
