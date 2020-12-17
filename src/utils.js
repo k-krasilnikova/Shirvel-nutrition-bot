@@ -1,4 +1,4 @@
-import lowerCase from "lodash/lowerCase";
+import lowerCase from "lodash/lowerCase.js";
 
 import { CONFIG } from "../env.js";
 import { REPLIES, FALSE_ANSWER } from "./constants.js";
