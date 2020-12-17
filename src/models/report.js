@@ -20,6 +20,10 @@ var ReportSchema = new Schema(
     snacks: {
       type: String,
     },
+    weight: {
+      type: String,
+      default: null,
+    },
     date: {
       type: String,
     },

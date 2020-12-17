@@ -1,5 +1,7 @@
+import lowerCase from "lodash/lowerCase";
+
 import { CONFIG } from "../env.js";
-import { REPLIES } from "./constants.js";
+import { REPLIES, FALSE_ANSWER } from "./constants.js";
 import { getAllUsers } from "./middlewares/users.js";
 import { scheduleDailyReport } from "./scheduler.js";
 
@@ -21,3 +23,6 @@ export const sendEngryMessage = (bot, user) => {
     disable_notification: true,
   });
 };
+
+export const isFalseAnswer = (answer) =>
+  lowerCase(answer) === lowerCase(FALSE_ANSWER);

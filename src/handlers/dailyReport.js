@@ -1,16 +1,14 @@
 import Scene from "telegraf/scenes/base.js";
 import moment from "moment";
 
-import { REPLIES, DAILY_MARKUP } from "../constants.js";
-import { sendNotificationForReviewer } from "../utils.js";
+import { REPLIES, DAILY_MARKUP, DATE_FORMAT } from "../constants.js";
+import { sendNotificationForReviewer, isFalseAnswer } from "../utils.js";
 import { createReport } from "../middlewares/reports.js";
 import { getUserByChatId } from "../middlewares/users.js";
 
 const dailyReportHandler = async (bot, stage) => {
   bot.command("/daily", async (ctx) => {
-    ctx.replyWithHTML(
-      `Введи, пожалуйста, дату, за которую хочешь внести данные, в формате <b> ДЕНЬ/МЕСЯЦ/ГОД </b> (13/01/2020).`
-    );
+    ctx.replyWithHTML(REPLIES.ManualDailyReport.start);
     ctx.scene.enter("getDateForDaily");
   });
 
@@ -18,8 +16,8 @@ const dailyReportHandler = async (bot, stage) => {
   stage.register(getDateForDaily);
   getDateForDaily.on("text", async (ctx) => {
     ctx.session.date = ctx.message.text;
-    const date = moment(ctx.message.text, "DD/MM/YYYY");
-    ctx.session.date = date.format("DD/MM/YYYY");
+    const date = moment(ctx.message.text, DATE_FORMAT);
+    ctx.session.date = date.format(DATE_FORMAT);
     const isDateInPast = date.isBefore();
 
     if (date && isDateInPast) {
@@ -27,13 +25,9 @@ const dailyReportHandler = async (bot, stage) => {
       await ctx.scene.leave("getDateForDaily");
       ctx.scene.enter("getBreakfest");
     } else {
-      await ctx.reply(
-        "Дата введена некорректно. Можно заполнить только данные за прошедший период"
-      );
+      await ctx.reply(REPLIES.ManualDailyReport.wrongDate);
       await ctx.scene.leave("getDateForDaily");
-      ctx.replyWithHTML(
-        `Введи, пожалуйста, дату, за которую хочешь внести данные, в формате <b> ДЕНЬ/МЕСЯЦ/ГОД </b> (13/01/2020).`
-      );
+      ctx.replyWithHTML(REPLIES.ManualDailyReport.start);
       ctx.scene.enter("getDateForDaily");
     }
   });
@@ -68,10 +62,23 @@ const dailyReportHandler = async (bot, stage) => {
   const getShacks = new Scene("getShacks");
   stage.register(getShacks);
   getShacks.on("text", async (ctx) => {
-    ctx.session.snacks = ctx.message.text;
+    ctx.session.snacks = isFalseAnswer(ctx.message.text)
+      ? ""
+      : ctx.message.text;
+    ctx.reply(REPLIES.DailyReport.weight);
+    await ctx.scene.leave("getShacks");
+    ctx.scene.enter("getUpdatedWeight");
+  });
+
+  const getUpdatedWeight = new Scene("getUpdatedWeight");
+  stage.register(getUpdatedWeight);
+  getUpdatedWeight.on("text", async (ctx) => {
+    ctx.session.weight = isFalseAnswer(ctx.message.text)
+      ? ""
+      : ctx.message.text;
     ctx.reply(REPLIES.DailyReport.end);
     const user = await getUserByChatId(ctx.chat.id);
-    const today = moment().format("DD/MM/YYYY");
+    const today = moment().format(DATE_FORMAT);
 
     const props = {
       chatId: ctx.chat.id,
@@ -79,14 +86,21 @@ const dailyReportHandler = async (bot, stage) => {
       lunch: ctx.session.lunch,
       dinner: ctx.session.dinner,
       snacks: ctx.session.snacks,
+      weight: ctx.session.weight,
       date: ctx.session.date || today,
     };
 
-    const message = `🥑 ${user.fullName} заполнил(а) ежедневный отчёт за ${props.date}.\nЗавтрак: ${props.breakfest}.\nОбед:  ${props.lunch}.\nУжин:  ${props.dinner}.\nПерекусы: ${props.snacks}.`;
+    const message = `🥑 ${user.fullName} заполнил(а) ежедневный отчёт за ${
+      props.date
+    }.\nЗавтрак: ${props.breakfest}.\nОбед:  ${props.lunch}.\nУжин:  ${
+      props.dinner
+    }.${props.snacks ? `\nПерекусы: ${props.snacks}.` : ""}${
+      props.weight ? `\nВес: ${props.weight}.` : ""
+    }`;
     console.log(message);
     sendNotificationForReviewer({ message, ctx });
     const report = await createReport(props);
-    await ctx.scene.leave("getShacks");
+    await ctx.scene.leave("getUpdatedWeight");
   });
 
   bot.action(DAILY_MARKUP.SD.value, async (ctx) => {
