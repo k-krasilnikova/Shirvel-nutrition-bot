@@ -1,8 +1,7 @@
 import Scene from "telegraf/scenes/base.js";
-import moment from "moment";
 
-import { REPLIES, DAILY_MARKUP, DATE_FORMAT } from "../constants.js";
-import { sendNotificationForReviewer, isFalseAnswer } from "../utils.js";
+import { REPLIES, DAILY_MARKUP, DAILY_MARKUP_REACTIONS, DATE_FORMAT } from "../constants.js";
+import { sendNotificationForReviewer, isFalseAnswer, getDateInString } from "../utils.js";
 import { createReport } from "../middlewares/reports.js";
 import { getUserByChatId } from "../middlewares/users.js";
 
@@ -16,7 +15,7 @@ const dailyReportHandler = async (bot, stage) => {
   stage.register(getDateForDaily);
   getDateForDaily.on("text", async (ctx) => {
     ctx.session.date = ctx.message.text;
-    const date = moment(ctx.message.text, DATE_FORMAT);
+    const date = getDateInString(ctx.message.text);
     ctx.session.date = date.format(DATE_FORMAT);
     const isDateInPast = date.isBefore();
 
@@ -78,7 +77,7 @@ const dailyReportHandler = async (bot, stage) => {
       : ctx.message.text;
     ctx.reply(REPLIES.DailyReport.end);
     const user = await getUserByChatId(ctx.chat.id);
-    const today = moment().format(DATE_FORMAT);
+    const today = getDateInString().format(DATE_FORMAT);
 
     const props = {
       chatId: ctx.chat.id,
@@ -90,20 +89,30 @@ const dailyReportHandler = async (bot, stage) => {
       date: ctx.session.date || today,
     };
 
-    const message = `🥑 ${user.fullName} заполнил(а) ежедневный отчёт за ${
-      props.date
-    }.\nЗавтрак: ${props.breakfest}.\nОбед:  ${props.lunch}.\nУжин:  ${
-      props.dinner
-    }.${props.snacks ? `\nПерекусы: ${props.snacks}.` : ""}${
-      props.weight ? `\nВес: ${props.weight}.` : ""
-    }`;
+    const message = `🥑 ${
+      user.fullName
+    } заполнил(а) ежедневный отчёт.\nЗавтрак: ${props.breakfest}.\nОбед:  ${
+      props.lunch
+    }.\nУжин:  ${props.dinner}.${
+      props.snacks ? `\nПерекусы: ${props.snacks}.` : ""
+    }${props.weight ? `\nВес: ${props.weight}.` : ""}\nДата: ${
+      ctx.session.date || today
+    }\n Чат: ${user.chatId}`;
     console.log(message);
-    sendNotificationForReviewer({ message, ctx });
+    const additionalProps = {
+      reply_markup: {
+        inline_keyboard: REPLIES.DailyReport.reactionsMarkup,
+        remove_keyboard: true,
+      },
+    };
+    sendNotificationForReviewer({ message, ctx, additionalProps });
     const report = await createReport(props);
     await ctx.scene.leave("getUpdatedWeight");
   });
 
   bot.action(DAILY_MARKUP.SD.value, async (ctx) => {
+    const date = ctx.update.callback_query.message.text.split(" ").pop();
+    ctx.session.date = date;
     ctx.deleteMessage();
     ctx.reply(DAILY_MARKUP.SD.reply);
     ctx.scene.enter("getBreakfest");
@@ -114,7 +123,36 @@ const dailyReportHandler = async (bot, stage) => {
   bot.action(DAILY_MARKUP.ND.value, (ctx) => {
     ctx.deleteMessage();
     ctx.reply(DAILY_MARKUP.ND.reply);
+    const user = await getUserByChatId(ctx.chat.id);
+    const message = `🚫 Пользователь ${user.fullName} отказался заполнять отчёт.`;
+    sendNotificationForReviewer({ message, ctx });
   });
+
+
+const processReaction = (ctx, reaction) => {
+  const previousMessage = ctx.update.callback_query.message.text.split(" ");
+  const user = Number(previousMessage.pop());
+  const date = previousMessage[previousMessage.length - 2];
+  const message =
+    "🥑 Тренер отреагировал на твоё питание за " + date + "\n" + reaction;
+  ctx.telegram.sendMessage(user, message);
+  ctx.telegram.editMessageReplyMarkup(
+    ctx.chat.id,
+    ctx.update.callback_query.message.message_id,
+    "",
+    {}
+  );
+};
+
+bot.action(DAILY_MARKUP_REACTIONS.VG.value, (ctx) => {
+  processReaction(ctx, DAILY_MARKUP_REACTIONS.VG.reply);
+});
+bot.action(DAILY_MARKUP_REACTIONS.N.value, (ctx) => {
+  processReaction(ctx, DAILY_MARKUP_REACTIONS.N.reply);
+});
+bot.action(DAILY_MARKUP_REACTIONS.NG.value, (ctx) => {
+  processReaction(ctx, DAILY_MARKUP_REACTIONS.NG.reply);
+});
 };
 
 export default dailyReportHandler;

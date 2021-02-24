@@ -1,7 +1,8 @@
 import lowerCase from "lodash/lowerCase.js";
+import moment from "moment";
 
 import { CONFIG } from "../env.js";
-import { REPLIES, FALSE_ANSWER } from "./constants.js";
+import { REPLIES, FALSE_ANSWER, DATE_FORMAT } from "./constants.js";
 import { getAllUsers } from "./middlewares/users.js";
 import { scheduleDailyReport } from "./scheduler.js";
 
@@ -26,3 +27,6 @@ export const sendEngryMessage = (bot, user) => {
 
 export const isFalseAnswer = (answer) =>
   lowerCase(answer) === lowerCase(FALSE_ANSWER);
+
+export const getDateInString = (date = "") =>
+  moment(date || new Date(), DATE_FORMAT);
