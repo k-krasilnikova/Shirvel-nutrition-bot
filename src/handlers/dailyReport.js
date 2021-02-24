@@ -1,7 +1,16 @@
 import Scene from "telegraf/scenes/base.js";
 
-import { REPLIES, DAILY_MARKUP, DAILY_MARKUP_REACTIONS, DATE_FORMAT } from "../constants.js";
-import { sendNotificationForReviewer, isFalseAnswer, getDateInString } from "../utils.js";
+import {
+  REPLIES,
+  DAILY_MARKUP,
+  DAILY_MARKUP_REACTIONS,
+  DATE_FORMAT,
+} from "../constants.js";
+import {
+  sendNotificationForReviewer,
+  isFalseAnswer,
+  getDateInString,
+} from "../utils.js";
 import { createReport } from "../middlewares/reports.js";
 import { getUserByChatId } from "../middlewares/users.js";
 
@@ -120,7 +129,7 @@ const dailyReportHandler = async (bot, stage) => {
   bot.action(DAILY_MARKUP.LD.value, (ctx) => {
     ctx.reply(DAILY_MARKUP.LD.reply);
   });
-  bot.action(DAILY_MARKUP.ND.value, (ctx) => {
+  bot.action(DAILY_MARKUP.ND.value, async (ctx) => {
     ctx.deleteMessage();
     ctx.reply(DAILY_MARKUP.ND.reply);
     const user = await getUserByChatId(ctx.chat.id);
@@ -128,31 +137,30 @@ const dailyReportHandler = async (bot, stage) => {
     sendNotificationForReviewer({ message, ctx });
   });
 
+  const processReaction = (ctx, reaction) => {
+    const previousMessage = ctx.update.callback_query.message.text.split(" ");
+    const user = Number(previousMessage.pop());
+    const date = previousMessage[previousMessage.length - 2];
+    const message =
+      "🥑 Тренер отреагировал на твоё питание за " + date + "\n" + reaction;
+    ctx.telegram.sendMessage(user, message);
+    ctx.telegram.editMessageReplyMarkup(
+      ctx.chat.id,
+      ctx.update.callback_query.message.message_id,
+      "",
+      {}
+    );
+  };
 
-const processReaction = (ctx, reaction) => {
-  const previousMessage = ctx.update.callback_query.message.text.split(" ");
-  const user = Number(previousMessage.pop());
-  const date = previousMessage[previousMessage.length - 2];
-  const message =
-    "🥑 Тренер отреагировал на твоё питание за " + date + "\n" + reaction;
-  ctx.telegram.sendMessage(user, message);
-  ctx.telegram.editMessageReplyMarkup(
-    ctx.chat.id,
-    ctx.update.callback_query.message.message_id,
-    "",
-    {}
-  );
-};
-
-bot.action(DAILY_MARKUP_REACTIONS.VG.value, (ctx) => {
-  processReaction(ctx, DAILY_MARKUP_REACTIONS.VG.reply);
-});
-bot.action(DAILY_MARKUP_REACTIONS.N.value, (ctx) => {
-  processReaction(ctx, DAILY_MARKUP_REACTIONS.N.reply);
-});
-bot.action(DAILY_MARKUP_REACTIONS.NG.value, (ctx) => {
-  processReaction(ctx, DAILY_MARKUP_REACTIONS.NG.reply);
-});
+  bot.action(DAILY_MARKUP_REACTIONS.VG.value, (ctx) => {
+    processReaction(ctx, DAILY_MARKUP_REACTIONS.VG.reply);
+  });
+  bot.action(DAILY_MARKUP_REACTIONS.N.value, (ctx) => {
+    processReaction(ctx, DAILY_MARKUP_REACTIONS.N.reply);
+  });
+  bot.action(DAILY_MARKUP_REACTIONS.NG.value, (ctx) => {
+    processReaction(ctx, DAILY_MARKUP_REACTIONS.NG.reply);
+  });
 };
 
 export default dailyReportHandler;
