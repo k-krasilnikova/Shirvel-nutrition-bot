@@ -6,8 +6,12 @@ import { REPLIES, FALSE_ANSWER, DATE_FORMAT } from "./constants.js";
 import { getAllUsers } from "./middlewares/users.js";
 import { scheduleDailyReport } from "./scheduler.js";
 
-export const sendNotificationForReviewer = ({ message, ctx }) => {
-  ctx.telegram.sendMessage(CONFIG.REVIEWER, message);
+export const sendNotificationForReviewer = ({
+  message,
+  ctx,
+  additionalProps,
+}) => {
+  ctx.telegram.sendMessage(CONFIG.REVIEWER, message, { ...additionalProps });
 };
 
 export const restartApplication = async (bot) => {
