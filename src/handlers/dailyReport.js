@@ -120,7 +120,9 @@ const dailyReportHandler = async (bot, stage) => {
   });
 
   bot.action(DAILY_MARKUP.SD.value, async (ctx) => {
-    const date = ctx.update.callback_query.message.text.split(" ").pop();
+    const date = ctx.update.callback_query.message.text.match(
+      /[0-9]*\/[0-9]*\/[0-9]*/g
+    );
     ctx.session.date = date;
     ctx.deleteMessage();
     ctx.reply(DAILY_MARKUP.SD.reply);
@@ -143,6 +145,7 @@ const dailyReportHandler = async (bot, stage) => {
     const date = previousMessage[previousMessage.length - 2];
     const message =
       "🥑 Тренер отреагировал на твоё питание за " + date + "\n" + reaction;
+    console.log(message);
     ctx.telegram.sendMessage(user, message);
     ctx.telegram.editMessageReplyMarkup(
       ctx.chat.id,
