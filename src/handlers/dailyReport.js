@@ -122,7 +122,7 @@ const dailyReportHandler = async (bot, stage) => {
   bot.action(DAILY_MARKUP.SD.value, async (ctx) => {
     const date = ctx.update.callback_query.message.text.match(
       /[0-9]*\/[0-9]*\/[0-9]*/g
-    );
+    )[0];
     ctx.session.date = date;
     ctx.deleteMessage();
     ctx.reply(DAILY_MARKUP.SD.reply);
