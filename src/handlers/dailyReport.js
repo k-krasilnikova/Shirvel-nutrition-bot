@@ -164,6 +164,9 @@ const dailyReportHandler = async (bot, stage) => {
   bot.action(DAILY_MARKUP_REACTIONS.NG.value, (ctx) => {
     processReaction(ctx, DAILY_MARKUP_REACTIONS.NG.reply);
   });
+  bot.action(DAILY_MARKUP_REACTIONS.FK.value, (ctx) => {
+    processReaction(ctx, DAILY_MARKUP_REACTIONS.FK.reply);
+  });
 };
 
 export default dailyReportHandler;

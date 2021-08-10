@@ -24,6 +24,7 @@ export const REPLIES = {
       [{ text: "Отлично", callback_data: "VG" }],
       [{ text: "Нормально", callback_data: "N" }],
       [{ text: "Плохо", callback_data: "NG" }],
+      [{ text: "Бля, тебе пиздец", callback_data: "FK" }],
     ],
   },
   ManualDailyReport: {
@@ -68,6 +69,11 @@ export const DAILY_MARKUP_REACTIONS = {
     value: "NG",
     label: "Not good",
     reply: "Всё плохо! 🐷",
+  },
+  FK: {
+    value: "FK",
+    label: "Fuck",
+    reply: "Бля, тебе пиздец!",
   },
 };
 
