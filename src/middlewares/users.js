@@ -23,12 +23,21 @@ export const getUserByChatId = async (chatId) => {
 };
 
 export const getAllUsers = async () => {
-  const users = await User.find({});
+  const users = await User.find({isActive: true});
   return users;
 };
 
 export const getAllUsersId = async () => {
-  const usersFullInfo = await User.find({});
+  const usersFullInfo = await User.find({isActive: true});
   const usersIds = usersFullInfo.map((user) => user.chatId);
   return usersIds;
+};
+
+export const updateUserByChatId = async (chatId, props) => {
+  const user = await User.findOneAndUpdate(
+    { chatId },
+    { $set: { ...props } },
+    { new: true, useFindAndModify: false }
+  );
+  return user;
 };

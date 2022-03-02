@@ -4,7 +4,7 @@ import moment from "moment";
 import { CONFIG } from "../env.js";
 import { REPLIES, FALSE_ANSWER, DATE_FORMAT } from "./constants.js";
 import { getAllUsers } from "./middlewares/users.js";
-import { scheduleDailyReport } from "./scheduler.js";
+import { scheduleDailyReport, scheduleCongratsWithWomesDay } from "./scheduler.js";
 
 export const sendNotificationForReviewer = ({
   message,
@@ -18,6 +18,7 @@ export const restartApplication = async (bot) => {
   const users = await getAllUsers();
   for (const user of users) {
     scheduleDailyReport(bot, user.chatId);
+    scheduleCongratsWithWomesDay(bot, user.chatId);
   }
 };
 
@@ -26,6 +27,13 @@ export const sendEngryMessage = (bot, user) => {
   bot.telegram.sendMessage(user, REPLIES.AngryMessage, {
     parse_mode: "MarkdownV2",
     disable_notification: true,
+  });
+};
+
+export const sendMessage = (bot, user, text) => {
+  console.log("Send Message to:", user);
+  bot.telegram.sendMessage(user, text, {
+    parse_mode: "MarkdownV2",
   });
 };
 
