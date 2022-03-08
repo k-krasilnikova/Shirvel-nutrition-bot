@@ -36,11 +36,8 @@ export const scheduleCheckingReports = (bot) => {
   });
 };
 
-export const scheduleCongratsWithWomesDay = (bot) => {
+export const scheduleCongratsWithWomesDay = (bot, chatId) => {
   cron.schedule(CONFIG.CONGRATS_WOMENS_DAY, async () => {
-    const users = await getAllUsersId();
-    for (const user of users) {
-      sendMessage(bot, user, CONGRATS_WITH_WOMENS_DAY);
-    }
+    sendMessage(bot, chatId, CONGRATS_WITH_WOMENS_DAY);
   });
 };
