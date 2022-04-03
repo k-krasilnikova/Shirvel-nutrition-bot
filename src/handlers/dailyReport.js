@@ -98,15 +98,17 @@ const dailyReportHandler = async (bot, stage) => {
       date: ctx.session.date || today,
     };
 
+    const report = await createReport(props);
+
     const message = `🥑 ${
-      user.fullName
+      user?.fullName
     } заполнил(а) ежедневный отчёт.\nЗавтрак: ${props.breakfest}.\nОбед:  ${
       props.lunch
     }.\nУжин:  ${props.dinner}.${
       props.snacks ? `\nПерекусы: ${props.snacks}.` : ""
     }${props.weight ? `\nВес: ${props.weight}.` : ""}\nДата: ${
       ctx.session.date || today
-    }\n Чат: ${user.chatId}`;
+    }\n Чат: ${user?.chatId}`;
     console.log(message);
     const additionalProps = {
       reply_markup: {
@@ -115,7 +117,6 @@ const dailyReportHandler = async (bot, stage) => {
       },
     };
     sendNotificationForReviewer({ message, ctx, additionalProps });
-    const report = await createReport(props);
     await ctx.scene.leave("getUpdatedWeight");
   });
 
